@@ -9,7 +9,8 @@ INSTALL
 3. unzip customCDD.zip in the same folder
 4. write in /.bashrc or /.profile ways to both cddblast data folder and to DARTS scripts:
 
-export DARTS="/way/to/DARTS/scripts" \n
+export DARTS="/way/to/DARTS/scripts" 
+
 export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
 
 5. 
