@@ -111,7 +111,7 @@ THIS PART WILL BE UPDATED.
 SAMPLE OUTPUT
 
 Here is a list of file types user may found in DARTS outputs:
-1. 
+
 2. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file of nucleotide sequences of found elements.
 3. "(%domain_type)_(%genome_name).fa_elements.faa" (GAG_Athal.fa_elements.faa) - FASTA file of amino acid sequences of %domain_type found in all elements from previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein), PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H, annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
 4. folder "mmseq2-80" with the same files as it was in 2., but only from representative elements from each cluster after clusterisation.
