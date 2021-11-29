@@ -35,6 +35,13 @@ element of a cluster is based on that score.
 
 DEPENDENCIES AND REQUIREMENTS
 
+The pipeline was tested and worked on 64-bit linux, Ubuntu v18.0 and v20.0.
+It worked well on PC with 19Gb RAM, but can run small genomes on PC with 4 Gb RAM.
+Processor of PC, where pipeline was mainly tested - Intel(R) core(TM) i5-3470 CPU @ 3.20GHz.
+! Warning: the pipeline outputs takes no much space on disk (vs genome assembly size), 
+but for its intermediate results the pipeline need a free space as much as 2-3 times more
+than unpacked genome assembly has.
+
 Before starting work with DARTS, a few dependencies must be installed.
 First, it is necessary to upload and configure rpstblastn and rpsbproc commands 
 from blast+ package. The way how to do that is described in the following manual:
