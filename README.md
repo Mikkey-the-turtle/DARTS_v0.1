@@ -112,10 +112,24 @@ SAMPLE OUTPUT
 
 Here is a list of file types user may found in DARTS outputs:
 
-2. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file of nucleotide sequences of found elements.
-3. "(%domain_type)_(%genome_name).fa_elements.faa" (GAG_Athal.fa_elements.faa) - FASTA file of amino acid sequences of %domain_type found in all elements from previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein), PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H, annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
-4. folder "mmseq2-80" with the same files as it was in 2., but only from representative elements from each cluster after clusterisation.
-5. "Natural_table" - processed mmseq2 output table of clusters (all chimeric elements excluded, better representative elements chosen).
-6. "coordinates_table_of_(%genome_name).fa_elements" - BAS-like file, where for each element found the following information is presented: 1) contig from assembly, 2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 5)element annotation and 6) stand (+/-).
+1. "(%genome_name).fa.step?.rpsbproc.result" - result tables of rpsbproc steps. 
+    Output files of rpstblastn are removing after rpsbproc tables being produced.
+2. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file of 
+    nucleotide sequences of found elements.
+3. "(%genome_name).fa_%quality_elements" - previous file splitted into score gradations.
+4. "(%domain_type)_(%genome_name).fa_elements.faa" (GAG_Athal.fa_elements.faa)
+    - FASTA file of amino acid sequences of %domain_type found in all elements 
+    from previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein),
+    PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H,
+    annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
+5. Folder "mmseq2-80" with the same files as previous, but only from 
+    representative elements from each cluster after clusterisation.
+6. "Natural_table" - processed mmseq2 output table of clusters (all chimeric 
+    elements excluded, better representative elements chosen).
+7. "coordinates_table_of_(%genome_name).fa_elements" - BAS-like file, where 
+    for each element found the following information is presented: 1) contig from assembly, 
+    2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 
+    5)element annotation and 6) stand (+/-).
+8. 
 
 
