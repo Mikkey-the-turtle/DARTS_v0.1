@@ -10,10 +10,12 @@ SAMPLE OUTPUT
 
 --------------------------------------------------------------------------------
 
-SUMMARY
+/bSUMMARY/b
 
 DARTS, Domain-Associated RetroTransposon Search, is a pipeline developed for searching, mining and annotation of LTR retrotransposons. DARTS pipeline is based on a standalone version of Reverse Position-Specific BLAST (RPS-BLAST), implemented online as CD-Search (Conserved Domain Search, https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi). 
+
 The pipeline starts with two rounds of RPS-BLAST domain search. First round is to find the central domain (here, it may be aRNH or RT of either Ty3/Gypsy LTR retrotransposons or including RT of Ty1/Copia, Bel/Pao, and Retroviruses). Then, all hits are extracted with their flanking regions (about +/-7500 bp) for the second RPS-BLAST run, which searches for 6 additional domains: reverse transcriptase, protease, gag polyprotein, integrase, ribonuclease H, and additional/archaeal ribonuclease H, annotated by DARTS as gRT, PRo, GAG, INT, gRH and aRH, respectively. 
+
 DARTS is aimed to help researchers in annotation of the genome assemblies for repetitive elements, to produce clusters with representative elements for phylogenetic analysis, generate amino acid sequences of each studied domain for alignments, and extract full-length nucleotide element sequences with annotated structure.
 
 --------------------------------------------------------------------------------
