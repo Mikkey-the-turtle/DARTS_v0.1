@@ -56,6 +56,15 @@ Next, for clusterisation step, the MMseqs2 tool is needed. The way to installati
 described in the following manual:
 https://mmseqs.com/latest/userguide.pdf
 
+
+For the following analysis there is a small script (not a part of DARTS), that provokes
+alignments by Mafft and phylogenetic tree buildings by  both two tools: FastTree and IQTree.
+Information how to install these tools is provided at the following links:
+
+https://mafft.cbrc.jp/alignment/software/
+http://www.microbesonline.org/fasttree/
+http://www.iqtree.org/doc/iqtree-doc.pdf
+
 --------------------------------------------------------------------------------
 
 INSTALLATION OF THE PIPELINE PACKAGE
@@ -82,13 +91,13 @@ RUN THE PROGRAMS
 
 After adding variable DARTS(export DARTS="/way/to/DARTS/scripts") showing the path
 to scripts folder, DARTS can be run in the command line by:
-sh DARTS/starting_DARTS_from_splitting.sh
+sh DARTS/main_DARTS.sh
 The same situation will be for all scripts in the same folder - they can be started 
-using "sh/python DARTS/%script_name.sh/py".
+using "sh DARTS/%script_name.sh", or "python DARTS/intermediate_scripts/%script_name.py" for untermediate scripts.
 
 Here are the main DARTS scripts to deal with and how to run them.
 
-1. starting_DARTS_from_splitting.sh
+1. main_DARTS.sh
 
 The main DARTS script produces all the pipelinedescribed in the issue. It provokes 
 the test of genome assembly splitting being necessary,splits, if needed, then starts
@@ -96,7 +105,7 @@ core part of the pipeline, and, if the splitting took place, reunite output of
 each batch to produce folder of all resuts and new tip of clustering.
 The script invocation is:
 
-sh DARTS/starting_DARTS_from_splitting.sh $1 $2 $3 $4
+sh DARTS/main_DARTS.sh $1 $2 $3 $4
 
 First variable the current script needs is a domain of the first step of RPS-BLAST.
 It may be either 'aRH' or 'RT'. If there will be something different, script will 
@@ -110,7 +119,65 @@ you want DARTS to be run.
 Third variable is a %project_name. Most of output files will be called partly with that name.
 Fourth varaible needs only if user want to search only LTR retrotransposons of Ty3/Gypsy.
 
-THIS PART WILL BE UPDATED.
+2. core_DARTS_aRH_search.sh
+
+The DARTS pipeline without splitting, searching aRNH as a first step domain. The script invocation is:
+
+sh DARTS/core_DARTS_aRH_search.sh $1 $2
+
+Variables are:
+First - genome assembly file or file from its split batch.
+Second - %project_name.
+
+3. core_DARTS_RT_search.sh
+
+The DARTS pipeline without splitting, searching RT as a first step domain. The script invocation is:
+
+sh DARTS/core_DARTS_RT_search.sh $1 $2 $3
+
+Variables are:
+First - genome assembly file or file from its split batch.
+Second - %project_name.
+Third - "GYPSY" mode (only Ty3/Gypsy) element searching or "all" mode (+Ty1/Copia, Bel/Pao, retroviruses).
+If "GYPSY" is not written, "all" mode will be started.
+
+4. clustering50_DARTS.sh
+
+If user has ready "(%project_name).fa_elements" and  "(%domain_type)_(%project_name).fa_elements.faa" files,
+the scipt will provoke all DARTS steps from clusterisaion by MMseqs2 at 50% identity level. The script invocation is:
+
+sh DARTS/clustering50_DARTS.sh $1
+
+The only variable the script needs is %project_name. ! This variable must be the same with its part of input file names.
+
+This script is used for final clusterisation of splitted batches in folder "(@project_name)_all". 
+
+5. clustering80_DARTS.sh
+
+The scirpt is the same as previous, but with another identity level of clusterisation - 80%. Invocation is:
+
+sh DARTS/clustering80_DARTS.sh $1
+
+The only variable the script needs is %project_name. ! This variable must be the same with its part of input file names.
+Its just a common second part of "core_DARTS_RT_search.sh" and "core_DARTS_aRH_search.sh" scripts.
+
+6. mafft_2_steps.sh
+
+It`s a secondary script for alignment and phylogenetic tree building. Uses Mafft (need as DEPENDENCIES) for alignment.
+For phylogeny uses FastTree and IQTree (see DEPENDENCIES). Invocation is:
+
+sh DARTS/mafft_2_steps.sh $1 $2 $3 $4
+
+Variables: $1 - Basic alignment to which user want to add their results. $2 - current .fasta file of sequences to add.
+$3 - %project_name or the common part of how to call output files. $4 - "iqtree" or nothing - to use or not IQTree.
+
+It will produce:
+$3-step1.fa - aligned $1 file
+$3-step2.fa - alignment of sequences from $1 and $2 (mafft uses '--add' function).
+$3-step3.fasttree.treefile - treefile made by FastTree tool.
+$3-step2.fa.X - X IQTree output files, including $3-step2.fa.treefile
+
+Last string of outputs wouldn`t be presented, if $4 is not 'iqtree' or the tool is not installed.
 
 
 --------------------------------------------------------------------------------
