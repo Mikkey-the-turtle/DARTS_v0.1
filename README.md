@@ -1,226 +1,80 @@
-# DARTS v0.1      README file, November 2021
+DARTS v0.1 README file, November 2021
 ================================================================================
-
-CONTENTS: 
-
-1. SUMMARY
-2. DEPENDENCIES AND REQUIREMENTS
-3. INSTALLATION OF THE PIPELINE PACKAGE
-5. RUN THE PROGRAMS
-6. SAMPLE OUTPUT
-
---------------------------------------------------------------------------------
-
+CONTENTS:
 SUMMARY
-
-DARTS, Domain-Assosiated RetroTransposon Search, is a pipeline developed for 
-searching, mining and annotation of LTR retrotransposons.
-DARTS pipeline is based om standalone version of Reverse Position-Specific BLAST 
-(RPS-BLAST), also known as CD-Search (Conserved Domain Search).
-The pipeline starts with two rounds of RPS-BLAST domain search. First round is 
-about finding the central domain (here, it may be aRNH or RT of either Ty3/Gypsy
-LTR retrotransposons or including Ty1/Copia, Bep/Pao, Retroviruses). Then, all
-hits are extracted with their flanking regions (about +-7500 bp) for the second
-RPS-BLAST run, which is searching for 6 domains: reverse transcriptase, protease, 
-gag polyprotein, integrase, ribonuclease H and additional/achaeal ribonuclease H,
-annotated by DARTS as gRT, PRo, GAG, INT, gRH and aRH subsequently.
-Its outputs help to annotate genome assemblies for repetative elements, produce 
-clusters with representative elements for phylogenetic analysis and generate
-amoni acid sequences of each studied domain for alignments, and full-length 
-nucleotide element sequences.
-For each element the pipeline uses its own score of wholeness. Choice of representative
-element of a cluster is based on that score.
-
---------------------------------------------------------------------------------
-
 DEPENDENCIES AND REQUIREMENTS
-
-The pipeline was tested and worked on 64-bit linux, Ubuntu v18.0 and v20.0.
-It worked well on PC with 19Gb RAM, but can run small genomes on PC with 4 Gb RAM.
-Processor of PC, where pipeline was mainly tested - Intel(R) core(TM) i5-3470 CPU @ 3.20GHz.
-! Warning: the pipeline outputs takes no much space on disk (vs genome assembly size), 
-but for its intermediate results the pipeline need a free space as much as 2-3 times more
-than unpacked genome assembly has.
-
-Before starting work with DARTS, a few dependencies must be installed.
-First, it is necessary to upload and configure rpstblastn and rpsbproc commands 
-from blast+ package. The way how to do that is described in the following manual:
-https://ftp.ncbi.nih.gov/pub/mmdb/cdd/rpsbproc/README
-
-Almost all DARTS scripts are based on Python programming language (developing 
-version was python3.6). The Biopython package is necessary too. Information about
-installation of Python and Biopython package is shown at 
-https://www.python.org/downloads/ and https://biopython.org/wiki/Download subsequently.
-
-Next, for clusterisation step, the MMseqs2 tool is needed. The way to installation 
-described in the following manual:
-https://mmseqs.com/latest/userguide.pdf
-
-
-For the following analysis there is a small script (not a part of DARTS), that provokes
-alignments by Mafft and phylogenetic tree buildings by  both two tools: FastTree and IQTree.
-Information how to install these tools is provided at the following links:
-
-https://mafft.cbrc.jp/alignment/software/
-http://www.microbesonline.org/fasttree/
-http://www.iqtree.org/doc/iqtree-doc.pdf
-
---------------------------------------------------------------------------------
-
-INSTALLATION OF THE PIPELINE PACKAGE
-
-To use the DARTS pipeline, user need to provoke the following tips:
-
-1. Installation of dependencies (see DEPENDENCIES AND REQUIREMENTS).
-2. Download DARTS files in a separate folder.
-3. Unzip customCDD.zip in the same folder. This container carries local databases which DARTS is needed.
-4. Write in /.bashrc or /.profile ways to both cddblast data folder and to DARTS scripts two following strings:
-
-export DARTS="/way/to/DARTS/scripts" 
-export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
-
-The cddblast data folder is normally presented by the following files :
-    bitscore_specific.txt  cddannot_generic.dat  cdtrack.txt
-    cddannot.dat           cddid.tbl             family_superfamily_links
-
-Now DARTS is ready to use.
-
---------------------------------------------------------------------------------
-
-RUN THE PROGRAMS
-
-After adding variable DARTS(export DARTS="/way/to/DARTS/scripts") showing the path
-to scripts folder, DARTS can be run in the command line by:
-sh DARTS/main_DARTS.sh
-The same situation will be for all scripts in the same folder - they can be started 
-using "sh DARTS/%script_name.sh", or "python DARTS/intermediate_scripts/%script_name.py" for untermediate scripts.
-
-Here are the main DARTS scripts to deal with and how to run them.
-
-1. main_DARTS.sh
-
-The main DARTS script produces all the pipelinedescribed in the issue. It provokes 
-the test of genome assembly splitting being necessary,splits, if needed, then starts
-core part of the pipeline, and, if the splitting took place, reunite output of 
-each batch to produce folder of all resuts and new tip of clustering.
-The script invocation is:
-
-sh DARTS/main_DARTS.sh $1 $2 $3 $4
-
-First variable the current script needs is a domain of the first step of RPS-BLAST.
-It may be either 'aRH' or 'RT'. If there will be something different, script will 
-interpret it as 'RT'.
-
-Second variable is a genome assembly file. 
-! Warning! All script are sensitive with the ways. Try to run them  in the current folder, 
-where genome assembly is put. Or make a "ln -s way/to/genome_assemby.fa" in the directory
-you want DARTS to be run.
-
-Third variable is a %project_name. Most of output files will be called partly with that name.
-Fourth varaible needs only if user want to search only LTR retrotransposons of Ty3/Gypsy.
-
-2. core_DARTS_aRH_search.sh
-
-The DARTS pipeline without splitting, searching aRNH as a first step domain. The script invocation is:
-
-sh DARTS/core_DARTS_aRH_search.sh $1 $2
-
-Variables are:
-First - genome assembly file or file from its split batch.
-Second - %project_name.
-
-3. core_DARTS_RT_search.sh
-
-The DARTS pipeline without splitting, searching RT as a first step domain. The script invocation is:
-
-sh DARTS/core_DARTS_RT_search.sh $1 $2 $3
-
-Variables are:
-First - genome assembly file or file from its split batch.
-Second - %project_name.
-Third - "GYPSY" mode (only Ty3/Gypsy) element searching or "all" mode (+Ty1/Copia, Bel/Pao, retroviruses).
-If "GYPSY" is not written, "all" mode will be started.
-
-4. clustering50_DARTS.sh
-
-If user has ready "(%project_name).fa_elements" and  "(%domain_type)_(%project_name).fa_elements.faa" files,
-the scipt will provoke all DARTS steps from clusterisaion by MMseqs2 at 50% identity level. The script invocation is:
-
-sh DARTS/clustering50_DARTS.sh $1
-
-The only variable the script needs is %project_name. ! This variable must be the same with its part of input file names.
-
-This script is used for final clusterisation of splitted batches in folder "(@project_name)_all". 
-
-5. clustering80_DARTS.sh
-
-The scirpt is the same as previous, but with another identity level of clusterisation - 80%. Invocation is:
-
-sh DARTS/clustering80_DARTS.sh $1
-
-The only variable the script needs is %project_name. ! This variable must be the same with its part of input file names.
-Its just a common second part of "core_DARTS_RT_search.sh" and "core_DARTS_aRH_search.sh" scripts.
-
-6. mafft_2_steps.sh
-
-It`s a secondary script for alignment and phylogenetic tree building. Uses Mafft (need as DEPENDENCIES) for alignment.
-For phylogeny uses FastTree and IQTree (see DEPENDENCIES). Invocation is:
-
-sh DARTS/mafft_2_steps.sh $1 $2 $3 $4
-
-Variables: $1 - Basic alignment to which user want to add their results. $2 - current .fasta file of sequences to add.
-$3 - %project_name or the common part of how to call output files. $4 - "iqtree" or nothing - to use or not IQTree.
-
-It will produce:
-$3-step1.fa - aligned $1 file
-$3-step2.fa - alignment of sequences from $1 and $2 (mafft uses '--add' function).
-$3-step3.fasttree.treefile - treefile made by FastTree tool.
-$3-step2.fa.X - X IQTree output files, including $3-step2.fa.treefile
-
-Last string of outputs wouldn`t be presented, if $4 is not 'iqtree' or the tool is not installed.
-
-
---------------------------------------------------------------------------------
-
+INSTALLATION OF THE PIPELINE PACKAGES
+RUNNING THE SCRIPTS
 SAMPLE OUTPUT
 
-Here is a list of file types user may found in DARTS outputs:
+SUMMARY
+DARTS, Domain-Associated RetroTransposon Search, is a pipeline developed for searching, mining and annotation of LTR retrotransposons. DARTS pipeline is based on a standalone version of Reverse Position-Specific BLAST (RPS-BLAST), implemented online as CD-Search (Conserved Domain Search, https://www.ncbi.nlm.nih.gov/Structure/cdd/wrpsb.cgi). The pipeline starts with two rounds of RPS-BLAST domain search. First round is to find the central domain (here, it may be aRNH or RT of either Ty3/Gypsy LTR retrotransposons or including RT of Ty1/Copia, Bel/Pao, and Retroviruses). Then, all hits are extracted with their flanking regions (about +/-7500 bp) for the second RPS-BLAST run, which searches for 6 additional domains: reverse transcriptase, protease, gag polyprotein, integrase, ribonuclease H, and additional/archaeal ribonuclease H, annotated by DARTS as gRT, PRo, GAG, INT, gRH and aRH, respectively. DARTS is aimed to help researchers in annotation of the genome assemblies for repetitive elements, to produce clusters with representative elements for phylogenetic analysis, generate amino acid sequences of each studied domain for alignments, and extract full-length nucleotide element sequences with annotated structure.
 
-1. "(%genome_name).fa.step?.rpsbproc.result" - result tables of rpsbproc steps. 
-    Output files of rpstblastn are removing after rpsbproc tables being produced.
-2. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file of 
-    nucleotide sequences of found elements.
-3. "(%genome_name).fa_%quality_elements" - previous file splitted into score gradations.
-4. "(%domain_type)_(%genome_name).fa_elements.faa" (GAG_Athal.fa_elements.faa)
-    - FASTA file of amino acid sequences of %domain_type found in all elements 
-    from previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein),
-    PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H,
-    annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
-5. Folder "mmseq2-80" with the same files as previous, but only from 
-    representative elements from each cluster after clusterisation.
-6. "Natural_table" - processed mmseq2 (with "mmseqs80-80" in name) output table of clusters
-    (all chimeric elements excluded, better representative elements chosen).
-7. "coordinates_table_of_(%genome_name).fa_elements" - BAS-like file, where 
-    for each element found the following information is presented: 1) contig from assembly, 
-    2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 
-    5)element annotation and 6) stand (+/-). 
-8. "Coords_1step.bam" - intermediate file need to produce previous file.
-9. "prot_domains.fa" - all amino acid sequences of extracted domains. From this file were
-    produced files of type "(%domain_type)_(%genome_name).fa_elements.faa"
-10. "aRNH/RT_and_approximates_Athal.fa_genome.fa" - nucleotide sequences of supposable elements
-    (first domain being found and its flanking regions). Result of the first step of domain search.
-11. files with "delegates" in file name ("rewrited*", "*elements_delegates.faa", "mmseq_delegates*").
-    There is no need of them - they are just intermediate to produce representatives in "mmseq-80" folder.
-12. Blastn outputs (findLTR*, blastn_LTR.out) - intermediates needed for LTR search.
-13. "qwerty_table" - intermediate table with annotated element structure, its length and
-    coordinates at the sequence with flanks (output of the first step of domain search).
-14. "structure_information" - table that shows, how the structure annotation was cleaned from 
-    chimeric structures and domain frameshifts.
-15. "tmp" folder - intermediates of MMseqs2 run.
-    
-All resulted files user may really need are:
-2. "(%genome_name).fa_elements" file - for work with full-length element sequences.
-4. "(%domain_type)_(%genome_name).fa_elements.faa" files - for work with all domains of the current type being found.
-5. Folder "mmseq2-80" - for alignment and phylogeny.
-7. "coordinates_table_of_(%genome_name).fa_elements" - for genome annotations.
+DEPENDENCIES AND REQUIREMENTS
+The pipeline was tested and worked on a 64-bit Linux machine with installed Ubuntu v18.0 and v20.0. The PC had 19Gb RAM, although DARTS can analyse small genomes on PCs with 4 Gb RAM. Processor - Intel(R) core(TM) i5-3470 CPU @ 3.20GHz. ! Warning: the pipeline outputs take a lot of space on disk (compared to genome assembly sizes); for its intermediate results DARTS needs at least 2-3 times more free space than the unpacked genome assembly takes.
+Before starting working with DARTS, a few dependencies must be installed. First, it is necessary to upload and configure the rpstblastn and rpsbproc tools from the blast+ package. To do this, following the manual: https://ftp.ncbi.nih.gov/pub/mmdb/cdd/rpsbproc/README
+Almost all DARTS scripts are based on Python programming language (developing version was python 3.6). The Biopython library is necessary too. Information about installation of the Python and Biopython packages is shown at https://www.python.org/downloads/ and https://biopython.org/wiki/Download respectively.
+Next, for clustering, the MMseqs2 tool is required. The installation is described in the following manual: https://mmseqs.com/latest/userguide.pdf
+For the following analysis there is a small script (not a part of DARTS), that launches alignments by MAFFT and subsequent phylogenetic tree building by FastTree and IQTree tools. Information on installation of these tools is provided at the following links: https://mafft.cbrc.jp/alignment/software/, http://www.microbesonline.org/fasttree/,http://www.iqtree.org/doc/iqtree-doc.pdf
 
+INSTALLATION OF THE PIPELINE PACKAGES
+To use the DARTS pipeline, a user needs to perform the following steps:
+Install the dependencies (see DEPENDENCIES AND REQUIREMENTS).
+Download DARTS files in a separate folder.
+Unzip customCDD.zip in the same folder. This container carries local databases which are required by DARTS.
+Write the paths to rpsblast, rpsbproc and DARTS scripts to the system PATH. For example put them to ~/.bashrc or ~/.profile:
+export DARTS="/way/to/DARTS/scripts" export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data" (N.N.N - the version of the cddblast)
+The cddblast data folder should have the following files: bitscore_specific.txt, cddannot_generic.dat, cdtrack.txt, cddannot.dat, cddid.tbl, family_superfamily_links
+Now DARTS is ready to use.
+
+RUNNING THE SCRIPTS
+After adding the DARTS scripts to the path, DARTS can be run in the command line by executin:
+ sh DARTS/main_DARTS.sh
+Other DARTS scripts can launched similarly: 
+sh DARTS/%script_name.sh
+or, for untermediate scripts:
+python DARTS/intermediate_scripts/%script_name.py 
+Here are the main DARTS scripts and their usage:
+main_DARTS.sh
+The main DARTS script launches a full analysis pipeline as described in (Biryukov and Ustyantsev 2021; submitted to the Genes MDPI journal).  The script initiates the test of genome assembly size, and splits it into several batches if necessary, then DARTS launches the core part of the pipeline, and, if the splitting took place, joins the output from each batch, and creates a directory with all the results. The script invocation is:
+sh DARTS/main_DARTS.sh $1 $2 $3 $4
+Where, $1 - name of the protein domain for the first step of RPS-BLAST search. For now, it may be either 'aRH' or 'RT'. RT will be run by default.
+$2 - a genome assembly file. ! Warning ! The script must be launched from the same folder where the genome file is. Alternatively, you can make a symbolic link to the file and put it in a different folder: "ln -s way/to/genome_assemby.fa".
+$3 - a %project_name. Most of the output file names will contain the %project_name.
+$4 - a choice between all LTR retrotransposons or only Ty3/Gypsy members.
+core_DARTS_aRH_search.sh
+The DARTS pipeline without splitting, searches the aRNH domain at the first RPS-BLAST step. To run type:
+sh DARTS/core_DARTS_aRH_search.sh $1 $2
+The arguments are: $1 - genome assembly file or file from its split batch. $2 - %project_name.
+core_DARTS_RT_search.sh
+The DARTS pipeline without splitting, searches the RT domain at the first RPS-BLAST step. To run type:
+sh DARTS/core_DARTS_RT_search.sh $1 $2 $3
+The arguments are: $1 - genome assembly file or file from its split batch. $2 - %project_name. $3 - "GYPSY" mode (only search for Ty3/Gypsy elements) or "all" mode (+Ty1/Copia, Bel/Pao, retroviruses). The "all" mode is a default option.
+clustering50_DARTS.sh
+If user has ready "(%project_name).fa_elements" and "(%domain_type)_(%project_name).fa_elements.faa" files, the script will run all the DARTS steps from clustering with MMseqs2 at 50% identity level. To run type:
+sh DARTS/clustering50_DARTS.sh $1
+The only variable the script needs is the %project_name. ! This variable must be the same as in the parts of input file names.
+This script is used for final clustering of split batches in the folder "(@project_name)_all".
+clustering80_DARTS.sh
+The script is the same as the previous, but with another identity level of clustering - 80%. To run type:
+sh DARTS/clustering80_DARTS.sh $1
+The only variable the script needs is the %project_name. ! This variable must be the same as in the parts of input file names. This script will be launched automatically during execution of the "core_DARTS_RT_search.sh" and "core_DARTS_aRH_search.sh" scripts.
+mafft_2_steps.sh
+This is a secondary script for alignment and phylogenetic tree building. It uses MAFFT for alignment of amino acid sequences of protein domains and uses FastTree and IQTree for phylogeny. To run type:
+sh DARTS/mafft_2_steps.sh $1 $2 $3 $4
+The arguments are: $1 - a basal (profile) alignment to which a user wants to add the results. $2 - a *.fasta file with sequences to add. $3 - %project_name. $4 - "iqtree" or nothing - to use or not use IQTree.
+The script will produce: $3-step1.fa (aligned $1 file) and  $3-step2.fa (alignment of sequences from $1 and $2 (mafft uses '--add' function)). $3-step3.fasttree.treefile - treefile made by FastTree tool. $3-step2.fa.X - X IQTree output files, including $3-step2.fa.treefile
+
+SAMPLE OUTPUT
+Here is a list of file types a user may found in the DARTS outputs:
+"(%genome_name).fa.step?.rpsbproc.result" - result tables of rpsbproc steps. Output files of rpstblastn are removed after the rpsbproc tables are produced.
+"(%genome_name).fa_elements" (for example - Athal.fa_elements) - FASTA file with the nucleotide sequences of all found elements.
+"(%genome_name).fa_%quality_elements" - previous file splitted into score gradations.
+"(%domain_type)_(%genome_name).fa_elements.faa" (for example GAG_Athal.fa_elements.faa) - FASTA file with amino acid sequences of %domain_type found in all elements from the previous file (1.). Altogether, there will be 6 domains - GAG (gag polyprotein), PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H, annotated as gRH), INT (integrase), and aRNH (additional/archaeal RNH, annotated as aRH).
+folder "mmseq2-80" contains the same files as in (2.), but the sequences are from representative elements from each lineage after clustering.
+"Natural_table" - processed mmseq2 output table of clusters (all chimeric elements are excluded, the best representative elements are chosen).
+"coordinates_table_of_(%genome_name).fa_elements" - BED-like formated file, where for each element found the following information is presented: 1) contig from assembly, 2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 5) the element structure annotation and 6) strand (+/-).
+"Coords_1step.bam" - intermediate file required to produce the previous file.
+"prot_domains.fa" - all amino acid sequences of the extracted domains. From this file other following files are produced "(%domain_type)_(%genome_name).fa_elements.faa"
+"aRNH/RT_and_approximates_Athal.fa_genome.fa" - nucleotide sequences of the identified hypothetical elements (first domain being found and its flanking regions). The results of the first step of the RPS-BLAST search.
+For most applications a user may need the following files: . "(%genome_name).fa_elements" file - to work with full-length element nucleotide sequences. 4. "(%domain_type)(%genome_name).fa_elements.faa" files - to work with all the domains of a given type that were found. 5. Folder "mmseq2-80" - for alignment and phylogeny. 7. "coordinates_table_of(%genome_name).fa_elements" - for genome annotation.
