@@ -2,21 +2,21 @@
 
 # $1 - start domain; $2 - genome; $3 - project name; $4 GYPSY ?
 
-Test=$(python $DARTS/is_splitting_needed.py $2)
+Test=$(python $DARTS/intermediate_scripts/is_splitting_needed.py $2)
 if [ "$Test" = "1" ]; then
-	python $DARTS/genome_splitter_choose_file.py $2 $3
+	python $DARTS/intermediate_scripts/genome_splitter_choose_file.py $2 $3
 	gzip $2
 	for j in $3*.fa
 	do
-		Test2=$(python $DARTS/is_splitting_needed.py $j)
+		Test2=$(python $DARTS/intermediate_scripts/is_splitting_needed.py $j)
 		if [ "$Test2" = "2" ]; then
-			python $DARTS/alternative_sequence_splitter_choose_file.py $j $j
+			python $DARTS/intermediate_scripts/alternative_sequence_splitter_choose_file.py $j $j
 			rm $j
 		fi
 	done
 elif [ "$Test" = "2" ]
 then
-	python $DARTS/alternative_sequence_splitter_choose_file.py $2 $3
+	python $DARTS/intermediate_scripts/alternative_sequence_splitter_choose_file.py $2 $3
 	gzip $2
 else
 	mv $2 $3.fa

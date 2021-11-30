@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$1" = "" ]; then
-	echo "\$1 - basic domain alignment, \$2 - current domain representative\`s file from studied domain, \$3 -mproject name, \$4 iqtree - start iqtree after fasttree if necessary"
+	echo "\$1 - basic domain alignment, \$2 - current domain representative\`s file from studied domain, \$3 -project name, \$4 iqtree - start iqtree after fasttree if necessary"
 	echo "(Needs Mafft, FastTree & IQTree tools)"
 else
 	mafft $1 > $3-step1.fa
