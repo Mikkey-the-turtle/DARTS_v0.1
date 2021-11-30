@@ -50,7 +50,7 @@ then
 	for domains in {'gRH','aRH','GAG','INT','PRo','gRT'}; do cat $domains_* $domains_$2_all_elements.faa; done
 	cat *_elements $2_all_elements
 	rm *.fa_*
-	sh $DARTS/clustering50_DARTS.sh lol $2_all $4 lol #last has no meaning
+	sh $DARTS/clustering50_DARTS.sh $2_all 
 	cd ..
 
 fi

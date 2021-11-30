@@ -1,6 +1,6 @@
 #!/bin/bash
 #export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
-# variables: $1 - unnecessary, $2 - project name,
+# variables: $1 - genome assembly file or its split, $2 - project name,
 source ~/.profile
 source ~/.bashrc
 
