@@ -48,9 +48,9 @@ To use the DARTS pipeline, a user needs to perform the following steps:
 
 4. Write the paths to rpsblast, rpsbproc and DARTS scripts to the system PATH. For example put them to ~/.bashrc or ~/.profile:
 
-			export DARTS="/way/to/DARTS/scripts" 
+		export DARTS="/way/to/DARTS/scripts" 
    
-			export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data" (N.N.N - the version of the cddblast)
+		export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data" (N.N.N - the version of the cddblast)
    
 The cddblast data folder should have the following files: bitscore_specific.txt, cddannot_generic.dat, cdtrack.txt, cddannot.dat, cddid.tbl, family_superfamily_links
 Now DARTS is ready to use.
