@@ -12,7 +12,7 @@ for record in SeqIO.parse(args[1],'fasta'):
 
 blast = open(args[2],'r').readlines()
 
-with open('Coords_1step.bam','w') as bam:
+with open('Coords_1step','w') as bam:
 		toBam = ''
 		bam.write(toBam)
 
@@ -49,7 +49,7 @@ def new_elem(i):
 		#print(sc.split('\n')[1])
 		#print(Seq.Seq(sc.split('\n')[1]).translate())
 		#9/0
-	with open('Coords_1step.bam','a') as bam:
+	with open('Coords_1step','a') as bam:
 		toBam = args[3] + '_ID' + str(i[3]) + '\t' + str(s) + '\t' + str(e) + '\t' + str(i[5]) + '\t' + str(i[0]) + '\n'
 		bam.write(toBam)
 	return sc

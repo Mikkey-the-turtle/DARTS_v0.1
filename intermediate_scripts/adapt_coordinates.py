@@ -4,7 +4,7 @@ import sys
 from Bio import SeqIO
 
 args = sys.argv
-#args = ['', 'smansoni.fa_elements', 'Coords_1step.bam','qwerty_table']
+#args = ['', 'smansoni.fa_elements', 'Coords_1step','qwerty_table']
 
 db = dict()
 for record in SeqIO.parse(args[1],'fasta'):
