@@ -1,15 +1,18 @@
-Here, in the Supplementary folder, are presented additional files from the same results produced as a part of DARTS issue ().
-
-The current folder carries 4 folders with the main outputs from each of 4 studied genomes for each way of LTR-retrotransposon searching and annotating.
-
-There are file types should be presented:
-1. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file of nucleotide sequences of found elements.
-2. "(%domain_type)_(%genome_name).fa_elements.faa" (GAG_Athal.fa_elements.faa) - FASTA file of amino acid sequences of %domain_type found in all elements from previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein), PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H, annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
-3. folder "mmseq2-80" with the same files as it was in 2., but only from representative elements from each cluster after clusterisation.
-4. "Natural_table" - processed mmseq2 output table of clusters (all chimeric elements excluded, better representative elements chosen).
-5. "coordinates_table_of_(%genome_name).fa_elements" - BAS-like file, where for each element found the following information is presented: 1) contig from assembly, 2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 5)element annotation and 6) stand (+/-).
-
-! If the file of genome assembly was split, DARTS produces such coordinates file (type 5) for each sub-file in splitted batch.
+Here, in the Supplementary folder, are presented additional files from the same results produced as a part of the DARTS paper (Biryukov and Ustyantsev 2021; DARTS: an Algorithm for Domain-Associated RetroTransposon Search in Genome Assemblies) submitted for consideration in the Genes MDPI journal.
 
 
-"toy_example..." is a folder with all resulted files after DARTS pipeline processed the Arabidopsis thaliana genome assembly, starting from RT domain.
+The folder contains original outputs produced by the LTRharvest and DARTS tools which were run on 4 green plant genome assemblies with varying genome size and transposable element content: Arabidopsis thaliana (TAIR10.1, 120 Mbp), Nicotiana tabacum (Ntab-TN90, 3736 Mbp), Selaginella moellendorffii (GCF_000143415.4, 212 Mbp), and Zea mays (Zm-B73-REFERENCE-NAM-5.0, 2192 Mbp). For DARTS, RT_results and aRH_results in the folder names designate the independent DARTS searches performed with the RT and aRNH domains at the first run of RPS-BLAST, respectively. For LTRharvest, RT_results and aRH_results in the folder names designate filtration of the LTRharvest predicted elements by the presence of the RT domain and RT and aRNH domains, respectively; the filtration was performed using the DARTS algorithm. 
+
+
+Inside each final folder, there is an archive with the following files presented:
+1. "(%genome_name).fa_elements" (example - Athal.fa_elements) - FASTA file with nucleotide sequences of the found elements.
+2. "(%domain_type)_(%genome_name).fa_elements.faa" (example - GAG_Athal.fa_elements.faa) - FASTA file with amino acid sequences of %domain_type found in all elements from the previous file (1.). Altogether, there are 6 domains - GAG (gag polyprotein), PRo (Protease), RT (reverse transcriptase, annotated as gRT), RNH (ribonuclease H, annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH).
+3. folder "mmseq2-80" contains the same files as in (2.), but the sequences are from representative elements from each lineage after clustering.
+4. "Natural_table" - processed mmseq2 output table of clusters (all chimeric elements are excluded, the best representative elements are chosen).
+5. "coordinates_table_of_(%genome_name).fa_elements" - BED-like formated file, where for each element found the following information is presented: 1) contig from assembly, 2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 5) the element structure annotation and 6) strand (+/-).
+
+
+! IMPORTANT ! If the genome assembly FASTA file was split, DARTS produces such a coordinates&rsquo; file (5.) for each batch of the split genome respectively.
+
+
+"toy_example..." is a folder with all temporary files after the DARTS pipeline processed the Arabidopsis thaliana genome assembly, starting from the RT domain.
