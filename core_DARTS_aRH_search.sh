@@ -1,5 +1,6 @@
 #!/bin/bash
 #export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
+# variables: $1 - unnecessary, $2 - project name,
 source ~/.profile
 source ~/.bashrc
 
@@ -8,7 +9,7 @@ rpstblastn -query $1 -db $DARTS/customCDD/Step1 -outfmt 11 -out $2.step1.rpstbla
 
 rpsbproc -i $2.step1.rpstblastn.out -o $2.step1.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
 
-python $DARTS/intermediate_scripts/new_1step_rpsbalstn-rpsbproc_parser.py $1 $2.step1.rpsbproc.result $2 
+python $DARTS/intermediate_scripts/1step_parser.py $1 $2.step1.rpsbproc.result $2 
 
 rm $2.step1.rpstblastn.out
 
@@ -17,7 +18,7 @@ rpstblastn -query aRNH_and_approximates_$2_genome.fa -db $DARTS/customCDD/Step3 
 
 rpsbproc -i $2.step3.rpstblastn.out -o $2.step3.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
 
-python $DARTS/intermediate_scripts/new_fix_mining.py aRNH_and_approximates_$2_genome.fa $2.step3.rpsbproc.result $2 
+python $DARTS/intermediate_scripts/mining.py aRNH_and_approximates_$2_genome.fa $2.step3.rpsbproc.result $2 
 
 #STEP - clustering and choosing delegates
 python $DARTS/intermediate_scripts/parse_prot_seq_domains.py prot_domains.fa $2_elements 

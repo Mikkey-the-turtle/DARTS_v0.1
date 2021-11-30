@@ -1,5 +1,6 @@
 #!/bin/bash
 #export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
+# variables: $1 - unnecessary, $2 - project name
 source ~/.profile
 source ~/.bashrc
 

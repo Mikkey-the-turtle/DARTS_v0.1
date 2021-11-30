@@ -1,38 +1,39 @@
 #!/bin/bash
 #export CDDATA="/way/to/cddblast/ncbi-blast-N.N.N+-src/c++/ReleaseMT/bin/data"
+# variables: $1 - unnecessary, $2 - project name, $3 - "GYPSY" or all RT search
 source ~/.profile
 source ~/.bashrc
 
 #STEP 1 - finding RT and its neighborhood
-if [ "$4" = "GYPSY" ]; then
+if [ "$3" = "GYPSY" ]; then
 	rpstblastn -query $1 -db $DARTS/customCDD/Step2GYPSY -outfmt 11 -out $2.step2g.rpstblastn.out -num_threads 4
 	rpsbproc -i $2.step2g.rpstblastn.out -o $2.step2g.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
-	python3 $DARTS/intermediate_scripts/new_1step_rpsbalstn-rpsbproc_parser_no_aRH.py $1 $2.step2g.rpsbproc.result $2
+	python3 $DARTS/intermediate_scripts/1step_parser_RT.py $1 $2.step2g.rpsbproc.result $2
 else
 	rpstblastn -query $1 -db $DARTS/customCDD/Step2 -outfmt 11 -out $2.step2.rpstblastn.out -num_threads 4
 	rpsbproc -i $2.step2.rpstblastn.out -o $2.step2.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
-	python3 $DARTS/intermediate_scripts/new_1step_rpsbalstn-rpsbproc_parser_no_aRH.py $1 $2.step2.rpsbproc.result $2
+	python3 $DARTS/intermediate_scripts/1step_parser_RT.py $1 $2.step2.rpsbproc.result $2
 fi
 
 rm $2.step2g.rpstblastn.out
 rm $2.step2.rpstblastn.out
 
 #STEP 2 - mining all domains in one file, elements in another 4 files with its Scores
-if [ "$4" = "GYPSY" ]; then
+if [ "$3" = "GYPSY" ]; then
 	rpstblastn -query RT_and_approximates_$2_genome.fa -db $DARTS/customCDD/Step3 -outfmt 11 -out $2.step3.rpstblastn.out -num_threads 4
 	rpsbproc -i $2.step3.rpstblastn.out -o $2.step3.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
-	python3 $DARTS/intermediate_scripts/new_fix_mining_no_aRH.py RT_and_approximates_$2_genome.fa $2.step3.rpsbproc.result $2 $4
+	python3 $DARTS/intermediate_scripts/mining_RT.py RT_and_approximates_$2_genome.fa $2.step3.rpsbproc.result $2 $3
 else
 	rpstblastn -query RT_and_approximates_$2_genome.fa -db $DARTS/customCDD/StepX4 -outfmt 11 -out $2.stepX4.rpstblastn.out -num_threads 4
 	rpsbproc -i $2.stepX4.rpstblastn.out -o $2.stepX4.rpsbproc.result -e 0.0001 -d $CDDATA -m rep -t doms
-	python3 $DARTS/intermediate_scripts/new_fix_mining_no_aRH.py RT_and_approximates_$2_genome.fa $2.stepX4.rpsbproc.result $2
+	python3 $DARTS/intermediate_scripts/mining_RT.py RT_and_approximates_$2_genome.fa $2.stepX4.rpsbproc.result $2
 fi
 
 rm $2.step3.rpstblastn.out
 rm $2.stepX4.rpstblastn.out
 
 #STEP - clustering and choosing delegates
-python3 $DARTS/intermediate_scripts/parse_prot_seq_domains_no_aRH.py prot_domains.fa $2_elements 
+python3 $DARTS/intermediate_scripts/parse_prot_seq_domains_RT.py prot_domains.fa $2_elements 
 
 python3 $DARTS/intermediate_scripts/replacing_star_to_X.py $2 'gRT' 
 python3 $DARTS/intermediate_scripts/replacing_star_to_X.py $2 'gRH' 

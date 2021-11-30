@@ -4,19 +4,19 @@
 
 Test=$(python $DARTS/intermediate_scripts/is_splitting_needed.py $2)
 if [ "$Test" = "1" ]; then
-	python $DARTS/intermediate_scripts/genome_splitter_choose_file.py $2 $3
+	python $DARTS/intermediate_scripts/genome_splitter.py $2 $3
 	gzip $2
 	for j in $3*.fa
 	do
 		Test2=$(python $DARTS/intermediate_scripts/is_splitting_needed.py $j)
 		if [ "$Test2" = "2" ]; then
-			python $DARTS/intermediate_scripts/alternative_sequence_splitter_choose_file.py $j $j
+			python $DARTS/intermediate_scripts/sequence_splitter.py $j $j
 			rm $j
 		fi
 	done
 elif [ "$Test" = "2" ]
 then
-	python $DARTS/intermediate_scripts/alternative_sequence_splitter_choose_file.py $2 $3
+	python $DARTS/intermediate_scripts/sequence_splitter.py $2 $3
 	gzip $2
 else
 	mv $2 $3.fa
@@ -28,9 +28,9 @@ do
 	cd $i-folder
 	ln -s ../$i
 	if [ "$1" = "aRH" ]; then
-		sh $DARTS/rpstblastn-rpsbproc-mining-domain_parsing_change_cdhit_or_mmseq_mode.sh $i $i lol $4 lol #last two have no meaning
+		sh $DARTS/core_DARTS_aRH_search.sh $i $i $4 
 	else
-		sh $DARTS/rpstblastn-rpsbproc-mining-domain_parsing_no_aRH_change_cdhit_or_mmseq_mode.sh $i $i lol $4 lol
+		sh $DARTS/core_DARTS_RT_search.sh $i $i $4 lol #last has no meaning
 	fi
 	cd ..
 done
@@ -50,7 +50,7 @@ then
 	for domains in {'gRH','aRH','GAG','INT','PRo','gRT'}; do cat $domains_* $domains_$2_all_elements.faa; done
 	cat *_elements $2_all_elements
 	rm *.fa_*
-	sh $DARTS/rpstblastn-rpsbproc-mining-domain_parsing_ready-half_before_cdhit_or_mmseq-50.sh lol $2_all lol $4 lol
+	sh $DARTS/core_DARTS_clustering50.sh lol $2_all $4 lol #last has no meaning
 	cd ..
 
 fi
