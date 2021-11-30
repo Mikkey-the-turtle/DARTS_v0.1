@@ -198,12 +198,29 @@ Here is a list of file types user may found in DARTS outputs:
     annotated as gRH), INT (integrase) and aRNH (additional/archaeal RNH, annotated as aRH). 
 5. Folder "mmseq2-80" with the same files as previous, but only from 
     representative elements from each cluster after clusterisation.
-6. "Natural_table" - processed mmseq2 output table of clusters (all chimeric 
-    elements excluded, better representative elements chosen).
+6. "Natural_table" - processed mmseq2 (with "mmseqs80-80" in name) output table of clusters
+    (all chimeric elements excluded, better representative elements chosen).
 7. "coordinates_table_of_(%genome_name).fa_elements" - BAS-like file, where 
     for each element found the following information is presented: 1) contig from assembly, 
     2-3) start and end coordinates for 4) LTR1/LTR2/internal (domain-containing part), 
-    5)element annotation and 6) stand (+/-).
-8. 
-
+    5)element annotation and 6) stand (+/-). 
+8. "Coords_1step.bam" - intermediate file need to produce previous file.
+9. "prot_domains.fa" - all amino acid sequences of extracted domains. From this file were
+    produced files of type "(%domain_type)_(%genome_name).fa_elements.faa"
+10. "aRNH/RT_and_approximates_Athal.fa_genome.fa" - nucleotide sequences of supposable elements
+    (first domain being found and its flanking regions). Result of the first step of domain search.
+11. files with "delegates" in file name ("rewrited*", "*elements_delegates.faa", "mmseq_delegates*").
+    There is no need of them - they are just intermediate to produce representatives in "mmseq-80" folder.
+12. Blastn outputs (findLTR*, blastn_LTR.out) - intermediates needed for LTR search.
+13. "qwerty_table" - intermediate table with annotated element structure, its length and
+    coordinates at the sequence with flanks (output of the first step of domain search).
+14. "structure_information" - table that shows, how the structure annotation was cleaned from 
+    chimeric structures and domain frameshifts.
+15. "tmp" folder - intermediates of MMseqs2 run.
+    
+All resulted files user may really need are:
+2. "(%genome_name).fa_elements" file - for work with full-length element sequences.
+4. "(%domain_type)_(%genome_name).fa_elements.faa" files - for work with all domains of the current type being found.
+5. Folder "mmseq2-80" - for alignment and phylogeny.
+7. "coordinates_table_of_(%genome_name).fa_elements" - for genome annotations.
 
