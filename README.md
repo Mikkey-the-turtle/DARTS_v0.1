@@ -157,4 +157,8 @@ Here is a list of file types a user may found in the DARTS outputs:
 
 10. "aRNH/RT_and_approximates_Athal.fa_genome.fa" - nucleotide sequences of the identified hypothetical elements (first domain being found and its flanking regions). The results    of the first step of the RPS-BLAST search.
 
-For most applications a user may need the following files: 2. "(%genome_name).fa_elements" file - to work with full-length element nucleotide sequences. 4. "(%domain_type)(%genome_name).fa_elements.faa" files - to work with all the domains of a given type that were found. 5. Folder "mmseq2-80" - for alignment and phylogeny. 7. "coordinates_table_of(%genome_name).fa_elements" - for genome annotation.
+For most applications a user may need the following files: 
+2. "(%genome_name).fa_elements" file - to work with full-length element nucleotide sequences. 
+4. "(%domain_type)(%genome_name).fa_elements.faa" files - to work with all the domains of a given type that were found. 
+5. Folder "mmseq2-80" - for alignment and phylogeny. 
+7. "coordinates_table_of(%genome_name).fa_elements" - for genome annotation.
