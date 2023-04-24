@@ -79,13 +79,13 @@ The main DARTS script launches a full analysis pipeline as described in (Biryuko
 
 		sh DARTS/main_DARTS.sh $1 $2 $3 $4
   
-Where, $1 - name of the protein domain for the first step of RPS-BLAST search. For now, it may be either 'aRH' or 'RT'. RT will be run by default.
+Where, $1 - name of the protein domain for the first step of RPS-BLAST search. For now, it may be either 'aRH' or 'RT'. RT will be run by default, if anything else written
 
 $2 - a genome assembly file. ! Warning ! The script must be launched from the same folder where the genome file is. Alternatively, you can make a symbolic link to the file and put it in a different folder: "ln -s way/to/genome_assemby.fa".
 
 $3 - a %project_name. Most of the output file names will contain the %project_name.
 
-$4 - a choice between all LTR retrotransposons or only Ty3/Gypsy members.
+$4 - a choice between all LTR retrotransposons (type 'LTR' or anything else, default option') or only Ty3/Gypsy (type 'GYPSY') members.
 
 2. core_DARTS_aRH_search.sh
 
